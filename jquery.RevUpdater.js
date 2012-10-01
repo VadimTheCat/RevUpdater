@@ -26,13 +26,20 @@
 
 			var field = $("#update").attr('data-field');
 
-			$(this).keyup(function() {
-				if($("#update[data-field="+fieldID+"]").hasClass('done'))
-					$("#update[data-field="+fieldID+"]").removeClass('done');
-				else if ($("#update[data-field="+fieldID+"]").hasClass('warning'));
-					$("#update[data-field="+fieldID+"]").removeClass('warning');
+			$(this).keypress(function(event) {
+				var keycode = (event.keyCode ? event.keyCode : event.which);
 
-				$("#update[data-field="+fieldID+"]").removeAttr("disabled");
+				if(keycode == '13'){
+					$("#update[data-field="+fieldID+"]").click();
+					return false;
+				} else {
+					if($("#update[data-field="+fieldID+"]").hasClass('done'))
+						$("#update[data-field="+fieldID+"]").removeClass('done');
+					else if ($("#update[data-field="+fieldID+"]").hasClass('warning'));
+						$("#update[data-field="+fieldID+"]").removeClass('warning');
+
+					$("#update[data-field="+fieldID+"]").removeAttr("disabled");
+				}
 			});
 
 			$("#update[data-field="+fieldID+"]").click(function() {
@@ -69,7 +76,7 @@
 		$(el).attr("disabled", "disabled");
 	}
 
-	$.RevUpdater = function(opts) { install(window, opts); };
+	$.RevUpdater = function(opts, events) { install(window, opts); };
 
 	$.RevUpdater.defaults = {
 		url: "update.php",
